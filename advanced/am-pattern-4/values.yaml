@@ -261,6 +261,56 @@ wso2:
 #          deployment.toml: |-
 #            # deployment configurations for the Control Plane profile of WSO2 API Manager v4.0.0 (<WSO2AM>/repository/conf/deployment.toml)
 
+    # Natty backend specific configurations
+    natty:
+      # Container image configurations
+      imageName: "ncarlier/natty"
+      imageTag: "latest"
+      imagePullPolicy: Always
+
+      # Number of deployment replicas
+      replicas: 2
+
+      # Kubernetes RollingUpdate strategy configurations
+      strategy:
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 0
+
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "500m"
+        limits:
+          memory: "1Gi"
+          cpu: "1000m"
+
+      # Kubernetes Probes
+      startupProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        failureThreshold: 5
+      livenessProbe:
+        periodSeconds: 10
+      readinessProbe:
+        initialDelaySeconds: 15
+        periodSeconds: 10
+
+      # Service configuration
+      service:
+        type: ClusterIP
+        port: 8080
+        targetPort: 8080
+
+      # Configure Ingress
+      ingress:
+        enabled: true
+        className: ""
+        hostname: "natty.am.wso2.com"
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+
 kubernetes:
   # Name of Kubernetes service account
   serviceAccount: "wso2am-pattern-4-svc-account"
