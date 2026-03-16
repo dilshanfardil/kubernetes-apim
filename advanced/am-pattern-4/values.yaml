@@ -19,13 +19,26 @@ wso2:
   subscription:
     username: ""
     password: ""
-  
+
   # WSO2 Choreo Analytics Parameters
   # If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/).
   choreoAnalytics:
     enabled: false
     endpoint: ""
     onpremKey: ""
+
+  # Azure Redis Cache Configuration
+  redis:
+    enabled: false  # Set to true to enable Redis
+    # Azure Cache for Redis connection details
+    host: "wso2-hiltonprod-redis.eastus.redis.azure.net"  # e.g., "wso2-hilton-redis.redis.cache.windows.net"
+    port: 10000  # SSL port
+    password: ""  # Primary or Secondary access key
+    database: 0
+    # SSL/TLS Configuration
+    ssl:
+      enabled: true
+      verifyPeer: true
 
   deployment:
     dependencies:
@@ -59,7 +72,7 @@ wso2:
       # If a custom image must be used, uncomment 'dockerRegistry' and provide its value
       # dockerRegistry: ""
       imageName: "wso2am"
-      imageTag: "4.0.0"
+      imageTag: "4.0.0.374"
       # Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
@@ -109,7 +122,7 @@ wso2:
         # Configure Ingress
         ingress:
           # Name of the IngressClass to use
-          className: ""
+          className: "nginx"
           # Hostname for Gateway (WebSub) service
           hostname: "websub.am.wso2.com"
           # Annotations for the API Manager Gateway (WebSub) service Ingress
@@ -122,7 +135,7 @@ wso2:
         # Configure Ingress
         ingress:
           # Name of the IngressClass to use
-          className: ""
+          className: "nginx"
           # Hostname for Gateway profile
           hostname: "gateway.am.wso2.com"
           # Annotations for the API Manager Gateway service Ingress
@@ -223,7 +236,7 @@ wso2:
         # Configure Ingress
         ingress:
           # Name of the IngressClass to use
-          className: ""
+          className: "nginx"
           # Hostname for Control Plane profile
           hostname: "am.wso2.com"
           # Annotations for the API Manager Control Plane service Ingress
@@ -264,7 +277,7 @@ wso2:
     # Natty backend specific configurations
     natty:
       # Container image configurations
-      imageName: "ncarlier/natty"
+      imageName: "ealen/echo-server"
       imageTag: "latest"
       imagePullPolicy: Always
 
@@ -299,13 +312,13 @@ wso2:
       # Service configuration
       service:
         type: ClusterIP
-        port: 8080
-        targetPort: 8080
+        port: 80
+        targetPort: 80
 
       # Configure Ingress
       ingress:
         enabled: true
-        className: ""
+        className: "nginx"
         hostname: "natty.am.wso2.com"
         annotations:
           kubernetes.io/ingress.class: "nginx"

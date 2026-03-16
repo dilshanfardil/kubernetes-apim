@@ -44,19 +44,19 @@ spec:
           protocol: TCP
         startupProbe:
           httpGet:
-            path: /echo
+            path: /
             port: http
           initialDelaySeconds: {{ .Values.wso2.deployment.natty.startupProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.natty.startupProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.natty.startupProbe.failureThreshold }}
         livenessProbe:
           httpGet:
-            path: /echo
+            path: /
             port: http
           periodSeconds: {{ .Values.wso2.deployment.natty.livenessProbe.periodSeconds }}
         readinessProbe:
           httpGet:
-            path: /echo
+            path: /
             port: http
           initialDelaySeconds: {{ .Values.wso2.deployment.natty.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.natty.readinessProbe.periodSeconds }}
